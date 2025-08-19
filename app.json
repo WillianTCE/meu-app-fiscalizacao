@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "b3183ba3-6b8b-466f-9c47-bd0337fb8ef5"
+      }
+    },
+    "android": {
+      "package": "com.AudiTech.fiscaliza"
+    }
+  }
+}
