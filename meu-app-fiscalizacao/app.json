@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "meu-app-fiscalizacao",
+    "name": "AudiTech",
     "slug": "meu-app-fiscalizacao",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -18,12 +18,22 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#FFFFFF"
       },
-      "edgeToEdgeEnabled": true
+      "package": "com.williantce.fiscalizacao",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ba1bdc58-8163-4610-a175-74f891c501b5"
+      }
     }
   }
 }
