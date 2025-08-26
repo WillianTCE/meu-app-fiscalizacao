@@ -7,7 +7,7 @@ import { supabase } from './supabaseClient';
 const SyncScreen = () => {
   const [pendingReports, setPendingReports] = useState([]);
   const [loading, setLoading] = useState(false);
-  const isFocused = useIsFocused(); // Para recarregar os dados quando o ecrã fica visível
+  const isFocused = useIsFocused();
 
   const loadPendingReports = async () => {
     setLoading(true);
@@ -32,39 +32,48 @@ const SyncScreen = () => {
 
     setLoading(true);
     let successCount = 0;
-    const reportsToSync = [...pendingReports]; // Cria uma cópia para trabalhar
-    const allLocalReportsJSON = await AsyncStorage.getItem('form_responses');
+    let firstError = null;
+    const reportsToSync = [...pendingReports];
+    let allLocalReportsJSON = await AsyncStorage.getItem('form_responses');
     let allLocalReports = allLocalReportsJSON ? JSON.parse(allLocalReportsJSON) : [];
 
     for (const report of reportsToSync) {
-      // Prepara os dados removendo o ID offline temporário
       const { id, ...reportData } = report;
-      reportData.status = 'synced'; // Muda o status
+      reportData.status = 'synced';
 
       const { error } = await supabase.from('form_responses').insert([reportData]);
 
       if (!error) {
-        // Se o envio deu certo, atualiza o status no armazenamento local
         const reportIndex = allLocalReports.findIndex(r => r.id === report.id);
         if (reportIndex > -1) {
           allLocalReports[reportIndex].status = 'synced';
         }
         successCount++;
       } else {
-        console.error('Erro ao sincronizar relatório:', report.id, error.message);
+        console.error('Erro detalhado do Supabase:', JSON.stringify(error, null, 2));
+        firstError = error.message;
+        break;
       }
     }
 
-    // Salva a lista inteira atualizada de volta no AsyncStorage
-    await AsyncStorage.setItem('form_responses', JSON.stringify(allLocalReports));
+    if (!firstError) {
+      await AsyncStorage.setItem('form_responses', JSON.stringify(allLocalReports));
+    }
 
     setLoading(false);
-    Alert.alert(
-      "Sincronização Concluída",
-      `${successCount} de ${reportsToSync.length} relatórios foram enviados com sucesso.`
-    );
 
-    // Recarrega a lista de pendentes no ecrã
+    if (firstError) {
+      Alert.alert(
+        "Erro na Sincronização",
+        `Não foi possível enviar os relatórios. Erro: \n\n${firstError}`
+      );
+    } else {
+       Alert.alert(
+        "Sincronização Concluída",
+        `${successCount} de ${reportsToSync.length} relatórios foram enviados com sucesso.`
+      );
+    }
+
     loadPendingReports();
   };
 
@@ -83,7 +92,7 @@ const SyncScreen = () => {
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <View style={styles.reportItem}>
-            <Text style={styles.reportTitle}>Relatório de {new Date(item.createdAt).toLocaleString('pt-BR')}</Text>
+            <Text style={styles.reportTitle}>{item.form_title || 'Relatório'} de {new Date(item.created_at).toLocaleString('pt-BR')}</Text> 
             <Text style={styles.reportStatus}>{`Status: ${item.status}`}</Text>
           </View>
         )}
