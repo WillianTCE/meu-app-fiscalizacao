@@ -73,8 +73,8 @@ const FormularioScreen = ({ route, navigation }) => {
         answers: respostas,
         photos: fotos,
         status: 'draft',
-        createdAt: new Date().toISOString(),
-        formTitle: formTitle
+        created_at: new Date().toISOString(),
+        form_title: formTitle
       };
       const existingResponsesJSON = await AsyncStorage.getItem('form_responses');
       const existingResponses = existingResponsesJSON ? JSON.parse(existingResponsesJSON) : [];

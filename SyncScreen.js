@@ -83,7 +83,7 @@ const SyncScreen = () => {
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <View style={styles.reportItem}>
-            <Text style={styles.reportTitle}>Relatório de {new Date(item.createdAt).toLocaleString('pt-BR')}</Text>
+            <Text style={styles.reportTitle}>{item.formTitle || 'Relatório' } de {new Date(item.created_at).toLocaleString('pt-BR')}</Text>
             <Text style={styles.reportStatus}>{`Status: ${item.status}`}</Text>
           </View>
         )}

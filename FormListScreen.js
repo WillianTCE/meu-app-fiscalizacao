@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { SafeAreaView, ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, RefreshControl, Button } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, RefreshControl } from 'react-native';
 import { supabase } from './supabaseClient';
 
 const FormListScreen = ({ navigation }) => {
@@ -27,14 +27,6 @@ const FormListScreen = ({ navigation }) => {
     setRefreshing(false);
   };
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button onPress={onRefresh} title="Atualizar" />
-      ),
-    });
-  }, [navigation]);
-
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
@@ -56,7 +48,7 @@ const FormListScreen = ({ navigation }) => {
             <TouchableOpacity
               key={form.id}
               style={styles.formButton}
-              onPress={() => navigation.navigate('Preenchimento', { formId: form.id, formTitle: form.title })}
+              onPress={() => navigation.navigate('InfoObra', { formId: form.id, formTitle: form.title })}
             >
               <Text style={styles.formButtonText}>{form.title}</Text>
             </TouchableOpacity>
