@@ -1,22 +1,39 @@
+<<<<<<< HEAD
 modules = ["nodejs-20"]
 hidden = [".config", "package-lock.json"]
 run = "npm run start"
+=======
+entrypoint = "index.js"
+modules = ["nodejs-22"]
+hidden = [".config", "package-lock.json"]
+>>>>>>> 3d8b651600f09591eab9a2d603c1c92748fbc876
 
 [gitHubImport]
 requiredFiles = [".replit", "replit.nix", "package.json", "package-lock.json"]
 
 [nix]
+<<<<<<< HEAD
 channel = "stable-25_05"
 
 [deployment]
 run = ["sh", "-c", "npm run start"]
+=======
+channel = "stable-24_11"
+packages = ["yakut"]
+
+[deployment]
+run = ["node", "index.js"]
+>>>>>>> 3d8b651600f09591eab9a2d603c1c92748fbc876
 deploymentTarget = "autoscale"
 ignorePorts = false
 
 [[ports]]
 localPort = 8081
 externalPort = 80
+<<<<<<< HEAD
 
 [[ports]]
 localPort = 8082
 externalPort = 3000
+=======
+>>>>>>> 3d8b651600f09591eab9a2d603c1c92748fbc876
